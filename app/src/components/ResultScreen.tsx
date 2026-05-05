@@ -69,6 +69,22 @@ export function ResultScreen({ result, onReset }: Props) {
           width: '100%',
         }}
       >
+        {/* Wine image */}
+        {wine.image && (
+          <motion.div variants={itemVariants} style={{ marginBottom: '28px' }}>
+            <img
+              src={wine.image}
+              alt={wine.name}
+              style={{
+                height: '220px',
+                width: 'auto',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 24px rgba(0,245,212,0.25))',
+              }}
+            />
+          </motion.div>
+        )}
+
         {/* Eyebrow */}
         <motion.p variants={itemVariants} style={{ margin: '0 0 12px' }}>
           <span

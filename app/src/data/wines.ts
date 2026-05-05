@@ -1,4 +1,9 @@
 import { type WineTag } from './tags'
+import binaryBlendImg from '../assets/Binary-Blend.png'
+import protocol7Img from '../assets/Protocol-7.png'
+import helixReserveImg from '../assets/Helix-Reserve.png'
+import chateauNovaPrimeImg from '../assets/ChÂteau-Nova-Prime.png'
+import neonFermentImg from '../assets/Neon-Ferment.png'
 
 export type Wine = {
   id: string
@@ -8,6 +13,10 @@ export type Wine = {
   description: string
   profileTags: WineTag[]
   whyTemplate: string
+  // Import the image at the top of this file and assign here:
+  // import binaryBlendImg from '../assets/binary-blend.png'
+  // then: image: binaryBlendImg
+  image?: string
 }
 
 // Placeholder wine profiles — host should replace name/varietal/region/description
@@ -23,6 +32,7 @@ export const WINES: Wine[] = [
     profileTags: ['bold', 'tannic', 'intense', 'earthy', 'complex', 'aged'],
     whyTemplate:
       'Your profile radiates {TAGS} — a presence that calls for something commanding and unapologetic. This wine doesn\'t ask permission.',
+    image: binaryBlendImg,
   },
   {
     id: 'Protocol 7',
@@ -34,6 +44,7 @@ export const WINES: Wine[] = [
     profileTags: ['elegant', 'fruity', 'earthy', 'dry', 'light', 'floral'],
     whyTemplate:
       'You carry {TAGS} in equal measure — the rare kind of complexity that doesn\'t shout. This wine understands that subtlety is its own power.',
+    image: protocol7Img,
   },
   {
     id: 'Helix Reserve',
@@ -45,6 +56,7 @@ export const WINES: Wine[] = [
     profileTags: ['bold', 'intense', 'tannic', 'earthy', 'spicy'],
     whyTemplate:
       'The signals you\'ve sent — {TAGS} — point to someone who doesn\'t settle for the predictable. This is the wine for people who leave a mark.',
+    image: helixReserveImg,
   },
   {
     id: 'ChÂteau Nova Prime',
@@ -56,6 +68,7 @@ export const WINES: Wine[] = [
     profileTags: ['fruity', 'bold', 'sweet', 'rich', 'floral'],
     whyTemplate:
       'Your {TAGS} profile suggests someone who brings warmth to every room. This wine has the same effect — it makes everything feel better.',
+    image: chateauNovaPrimeImg,
   },
   {
     id: 'Neon Ferment',
@@ -67,5 +80,6 @@ export const WINES: Wine[] = [
     profileTags: ['crisp', 'acidic', 'light', 'mineral', 'lean', 'dry'],
     whyTemplate:
       'You signal {TAGS} — the kind of clarity that cuts right through noise. This wine moves the same way you do: fast, precise, unforgettable.',
+    image: neonFermentImg,
   }
 ]
