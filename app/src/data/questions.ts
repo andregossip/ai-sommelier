@@ -118,6 +118,16 @@ export const CIRCLE_POSITIONS: CirclePos[][] = [
     { x: 88, y: 64, size: 90  },
     { x: 53, y: 84, size: 106 },
   ],
+  // Q6 – Irrational Fears (7 options)
+  [
+    { x: 18, y: 14, size: 112*1.5 },
+    { x: 55, y: 10, size: 98*1.5  },
+    { x: 85, y: 18, size: 118 },
+    { x: 12, y: 50, size: 104 },
+    { x: 46, y: 46, size: 120 },
+    { x: 78, y: 52, size: 96  },
+    { x: 33, y: 78, size: 108 },
+  ],
 ]
 
 export const QUESTIONS: Question[] = [
@@ -238,6 +248,19 @@ export const QUESTIONS: Question[] = [
       { label: 'Arctic Aurora',    tags: ['crisp', 'mineral', 'precise'] },
       { label: 'Jazz Club',        tags: ['aged', 'earthy', 'complex'] },
       { label: 'Open Ocean',       tags: ['mineral', 'acidic', 'lean'] },
+    ],
+  },
+  {
+    id: 'fears',
+    prompt: 'Your social kryptonite?',
+    options: [
+      { label: 'Pressing “reply all” by accident', tags: ['precise', 'dry', 'mineral'] },
+      { label: 'Not recognizing someone who clearly knows me',tags: ['crisp', 'light', 'acidic'] },
+      { label: 'My headphones not being plugged in and everyone hears my music',    tags: ['elegant', 'lean', 'mineral'] },
+      { label: 'Misjudging a handshake / hug situation',       tags: ['fruity', 'playful', 'light'] },
+      { label: 'Accidentally waving back at someone who wasn’t waving at me',       tags: ['sparkling', 'playful', 'crisp'] },
+      { label: 'Saying a joke and it not landing',       tags: ['bold', 'playful', 'fruity'] },
+      { label: 'Running for the bus/train and the doors close right in front of you while everyone saw you sprint',    tags: ['intense', 'bold', 'acidic'] },
     ],
   },
 ]

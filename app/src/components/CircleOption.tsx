@@ -36,6 +36,7 @@ export function CircleOption({ label, pos, isSelected, onSelect, index }: Props)
         fontWeight: 600,
         lineHeight: 1.2,
         letterSpacing: '0.01em',
+        // Bubble text size: raise multiplier (0.055) or ceiling (0.85rem) to make text bigger
         fontSize: `clamp(0.6rem, ${pos.size * 0.055}px, 0.85rem)`,
         backgroundColor: 'transparent',
         outline: 'none',
