@@ -1,10 +1,12 @@
+import { type WineTag } from './tags'
+
 export type Wine = {
   id: string
   name: string
   varietal: string
   region: string
   description: string
-  profileTags: string[]
+  profileTags: WineTag[]
   whyTemplate: string
 }
 

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion, type Variants } from 'framer-motion'
 import { QUESTIONS, CIRCLE_POSITIONS, type Option } from '../data/questions'
 import { CircleOption } from './CircleOption'
 import { screenVariants } from './screenVariants'
@@ -9,26 +9,30 @@ type Props = {
   onSelect: (option: Option) => void
 }
 
+const circleContainerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.05 } },
+}
+
+const circleItemVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.5 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 280, damping: 22 },
+  },
+}
+
 export function QuestionScreen({ questionIndex, onSelect }: Props) {
   const question = QUESTIONS[questionIndex]
   const positions = CIRCLE_POSITIONS[questionIndex]
   const [selected, setSelected] = useState<number | null>(null)
 
-  // Reset selected state when question changes
-  useEffect(() => {
-    setSelected(null)
-  }, [questionIndex])
-
   const handleSelect = (index: number) => {
-    if (selected !== null) return // prevent double-tap
+    if (selected !== null) return
     setSelected(index)
-    // Brief delay so user sees the teal "selected" highlight before advancing
-    setTimeout(() => {
-      onSelect(question.options[index])
-    }, 420)
+    setTimeout(() => onSelect(question.options[index]), 420)
   }
-
-  const progressDots = QUESTIONS.map((_, i) => i)
 
   return (
     <motion.div
@@ -42,157 +46,116 @@ export function QuestionScreen({ questionIndex, onSelect }: Props) {
         zIndex: 1,
         width: '100%',
         height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
       }}
     >
-      {/* Top bar: progress + question number */}
-      <div
-        style={{
-          padding: '28px 40px 0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexShrink: 0,
-        }}
+      {/* Circles fill the ENTIRE screen */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={circleContainerVariants}
+        style={{ position: 'absolute', inset: 0 }}
       >
-        {/* Progress dots */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          {progressDots.map((i) => (
-            <motion.div
-              key={i}
-              animate={{
-                backgroundColor:
-                  i < questionIndex
-                    ? '#00f5d4'
-                    : i === questionIndex
-                    ? '#b44fff'
-                    : 'rgba(255,255,255,0.15)',
-                scale: i === questionIndex ? 1.3 : 1,
-                boxShadow:
-                  i === questionIndex
-                    ? '0 0 8px #b44fff'
-                    : i < questionIndex
-                    ? '0 0 6px #00f5d4'
-                    : 'none',
-              }}
-              transition={{ duration: 0.4 }}
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Question counter */}
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '0.7rem',
-            color: 'rgba(240,240,248,0.35)',
-            letterSpacing: '0.15em',
-          }}
-        >
-          {String(questionIndex + 1).padStart(2, '0')} / {String(QUESTIONS.length).padStart(2, '0')}
-        </span>
-      </div>
-
-      {/* Question text */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`prompt-${questionIndex}`}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.4 }}
-          style={{
-            padding: '16px 40px 0',
-            flexShrink: 0,
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '0.65rem',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: '#b44fff',
-              margin: '0 0 6px',
-              opacity: 0.85,
-            }}
-          >
-            {question.subtitle}
-          </p>
-          <h2
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1.6rem, 4vw, 2.4rem)',
-              fontWeight: 700,
-              margin: 0,
-              color: '#f0f0f8',
-              letterSpacing: '-0.01em',
-              lineHeight: 1.15,
-            }}
-          >
-            {question.prompt}
-          </h2>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Circles area */}
-      <div
-        style={{
-          position: 'relative',
-          flex: 1,
-          minHeight: 0,
-        }}
-      >
-        <AnimatePresence mode="wait">
+        {question.options.map((option, i) => (
           <motion.div
-            key={`circles-${questionIndex}`}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.07 } },
-            }}
+            key={`${questionIndex}-${i}`}
+            variants={circleItemVariants}
             style={{
               position: 'absolute',
-              inset: 0,
+              left: `${positions[i].x}%`,
+              top: `${positions[i].y}%`,
+              transform: 'translate(-50%, -50%)',
             }}
           >
-            {question.options.map((option, i) => (
-              <motion.div
-                key={`${questionIndex}-${i}`}
-                variants={{
-                  hidden: { opacity: 0, scale: 0.6 },
-                  visible: {
-                    opacity: 1,
-                    scale: 1,
-                    transition: { type: 'spring', stiffness: 300, damping: 22 },
-                  },
-                }}
-                style={{
-                  position: 'absolute',
-                  left: `${positions[i].x}%`,
-                  top: `${positions[i].y}%`,
-                  transform: 'translate(-50%, -50%)',
-                }}
-              >
-                <CircleOption
-                  label={option.label}
-                  pos={positions[i]}
-                  isSelected={selected === i}
-                  onSelect={() => handleSelect(i)}
-                  index={i}
-                />
-              </motion.div>
-            ))}
+            <CircleOption
+              label={option.label}
+              pos={positions[i]}
+              isSelected={selected === i}
+              onSelect={() => handleSelect(i)}
+              index={i}
+            />
           </motion.div>
-        </AnimatePresence>
+        ))}
+      </motion.div>
+
+      {/* Floating header overlay — pointer-events: none so circles beneath are tappable */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          pointerEvents: 'none',
+          background:
+            'linear-gradient(to bottom, rgba(8,8,16,0.92) 0%, rgba(8,8,16,0.72) 40%, rgba(8,8,16,0.0) 100%)',
+          padding: '22px 36px 52px',
+        }}
+      >
+        {/* Progress dots + counter row */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '14px',
+          }}
+        >
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            {QUESTIONS.map((_, i) => (
+              <motion.div
+                key={i}
+                animate={{
+                  backgroundColor:
+                    i < questionIndex
+                      ? '#00f5d4'
+                      : i === questionIndex
+                      ? '#b44fff'
+                      : 'rgba(255,255,255,0.18)',
+                  scale: i === questionIndex ? 1.35 : 1,
+                  boxShadow:
+                    i === questionIndex
+                      ? '0 0 8px #b44fff'
+                      : i < questionIndex
+                      ? '0 0 6px #00f5d4'
+                      : 'none',
+                }}
+                transition={{ duration: 0.4 }}
+                style={{ width: 8, height: 8, borderRadius: '50%' }}
+              />
+            ))}
+          </div>
+
+          <span
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '0.68rem',
+              color: 'rgba(240,240,248,0.38)',
+              letterSpacing: '0.15em',
+            }}
+          >
+            {String(questionIndex + 1).padStart(2, '0')} /{' '}
+            {String(QUESTIONS.length).padStart(2, '0')}
+          </span>
+        </div>
+
+        {/* Question prompt */}
+        <motion.h2
+          key={`prompt-${questionIndex}`}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)',
+            fontWeight: 700,
+            margin: 0,
+            color: '#f0f0f8',
+            letterSpacing: '-0.01em',
+            lineHeight: 1.15,
+          }}
+        >
+          {question.prompt}
+        </motion.h2>
       </div>
     </motion.div>
   )
