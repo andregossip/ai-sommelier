@@ -53,7 +53,7 @@ export function QuestionScreen({ questionIndex, onSelect }: Props) {
         initial="hidden"
         animate="visible"
         variants={circleContainerVariants}
-        style={{ position: 'absolute', inset: 0 }}
+        style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
       >
         {question.options.map((option, i) => (
           <motion.div
