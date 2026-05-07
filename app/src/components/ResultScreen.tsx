@@ -71,7 +71,7 @@ export function ResultScreen({ result, onReset }: Props) {
       >
         {/* Wine image */}
         {wine.image && (
-          <motion.div variants={itemVariants} style={{ marginBottom: '28px' }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: '28px', display: 'flex', justifyContent: 'center' }}>
             <img
               src={wine.image}
               alt={wine.name}

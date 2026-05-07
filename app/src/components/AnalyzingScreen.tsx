@@ -21,13 +21,13 @@ export function AnalyzingScreen({ onComplete }: Props) {
     // Cycle through status messages
     const msgInterval = setInterval(() => {
       setStatusIndex((i) => (i + 1) % STATUS_MESSAGES.length)
-    }, 500)
+    }, 1200)
 
-    // Complete after 2.8 seconds
+    // Complete after 6.5 seconds
     const done = setTimeout(() => {
       clearInterval(msgInterval)
       onComplete()
-    }, 2800)
+    }, 6500)
 
     return () => {
       clearInterval(msgInterval)
