@@ -19,11 +19,13 @@ export function CircleOption({ label, pos, isSelected, onSelect, index }: Props)
     return 'idle'
   }
 
+  const size = pos.size * 1.35
+
   return (
     <motion.button
       style={{
-        width: pos.size,
-        height: pos.size,
+        width: size,
+        height: size,
         borderRadius: '50%',
         border: '1.5px solid',
         cursor: 'pointer',
@@ -36,8 +38,7 @@ export function CircleOption({ label, pos, isSelected, onSelect, index }: Props)
         fontWeight: 600,
         lineHeight: 1.2,
         letterSpacing: '0.01em',
-        // Bubble text size: raise multiplier (0.055) or ceiling (0.85rem) to make text bigger
-        fontSize: `clamp(0.6rem, ${pos.size * 0.055}px, 0.85rem)`,
+        fontSize: `clamp(0.75rem, ${size * 0.07}px, 1.1rem)`,
         backgroundColor: 'transparent',
         outline: 'none',
         WebkitAppearance: 'none',
